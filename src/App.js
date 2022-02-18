@@ -1,24 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import Navegacion from './Componentes/Navegacion';
+import Login from './Componentes/Login';
+import { Container, Row, Col } from 'react-bootstrap';
+import Registro from './Componentes/Registro';
+import { Routes, Route, Link } from "react-router-dom";
+import Productos from './Componentes/Productos';
+import Centros from './Componentes/Centros';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <Navegacion/>
+        {/* <Routes>
+          <Route path="/" element={<Registro />} />
+          <Route path="login" element={<Login />} />
+        </Routes> */}
+        <Container fluid>
+          <Row className='mt-4'>
+            <Col md={8}>
+            <Productos/>
+              {/* <Registro/> */}
+              </Col>
+            <Col md={4}>
+             <Centros/>
+            </Col>
+          </Row>
+        </Container>
+  
+      </>    
   );
 }
 
