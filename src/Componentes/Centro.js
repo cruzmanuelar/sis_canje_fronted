@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
 import ReactLoading from 'react-loading';
+import { list } from "./generic";
 
 const Centro = () => {
 
@@ -38,7 +39,7 @@ const Centro = () => {
   return (
     <Container fluid>
       <Row>
-        {centro.length === 0 ? <p>No hay cositas</p> : <p>Ya cargo</p>}
+        {centro.length === 0 ? <ReactLoading type={'bubbles'} color="black"></ReactLoading> : <p>Ya cargo</p>}
         <Col md={3} className='text-center mx-auto'>
           <Card className='mt-4'>
             <Card.Img variant="top" src={centro.imagen}/>
