@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import ReactLoading from 'react-loading';
 
 const Centros = () => {
 
@@ -34,9 +35,20 @@ const Centros = () => {
                 </div>
                 
                 <Dropdown.Divider />
-                {centros.map((cen) => 
-                
-                
+
+                {centros.length === 0 ?
+                    <Row
+                    style={{
+                      position: 'absolute', left: '46%', top: '50%'
+                    }}
+                    >
+                      <ReactLoading type={'bubbles'} color="black" height={'10%'} width={'10%'}></ReactLoading>
+                    </Row>
+                :
+                <Row>
+                    {centros.map((cen) => 
+                    
+                    
                     <Col md={4} className=''>
                     <Card className='mt-4'>
                             <Card.Img variant="top" src={cen.imagen}/>
@@ -50,9 +62,9 @@ const Centros = () => {
                             </Card.Body>
                     </Card>
                     </Col>
-                
-                
-                )}
+                    )}
+                </Row>
+                }
                 </Row>
         </Container>
     )

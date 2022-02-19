@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
 import { useState } from 'react';
+import ReactLoading from 'react-loading';
 
 const Productos = () => {
 
@@ -27,6 +28,17 @@ const Productos = () => {
                     <h3>Productos</h3>                    
                 </div>
                 <Dropdown.Divider />
+
+                {productos.length === 0 ?
+                    <Row
+                    style={{
+                      position: 'absolute', left: '46%', top: '50%'
+                    }}
+                    >
+                      <ReactLoading type={'bubbles'} color="black" height={'10%'} width={'10%'}></ReactLoading>
+                    </Row>
+                :
+                <Row>
                 {productos.map((pr) => 
                     <Col md={3}>
                         <Card style={{ width: '15rem' }} className='mt-4'>
@@ -44,6 +56,10 @@ const Productos = () => {
                         </Card>
                     </Col>
                 )}
+                </Row>
+                
+                }
+                
             </Row>
         </Container>
     )
