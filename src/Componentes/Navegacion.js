@@ -1,12 +1,14 @@
 import React from 'react';
 import { Navbar, Container, Nav, NavDropdown, Form, Button} from 'react-bootstrap';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, NavLink } from "react-router-dom";
 
 const Navegacion = () => {
   return (
     <Navbar bg="dark" expand="lg">
         <Container fluid>
-            <Navbar.Brand className='text-light h1' href="#">Canjea2</Navbar.Brand>
+            <Navbar.Brand className='text-light h1' href="">
+                <NavLink style={{color:'white', textDecoration:'none'}} to='/'>Productos</NavLink>
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
             
@@ -15,12 +17,12 @@ const Navegacion = () => {
                 style={{ maxHeight: '100px'}}
                 navbarScroll
             >
-                <Nav.Link className='text-light h5' href="/centros">
-                    <Link style={{ textDecoration: 'none', color:'white'}} to="/">Centros</Link>
+                <Nav.Link className='text-light h5' href="">
+                    <NavLink style={{color:'white', textDecoration:'none'}} to='/centros'>Centros</NavLink>
                 </Nav.Link>
                 
-                <Nav.Link className='text-light h5' href="/nosotros">
-                    <Link to="/" style={{ textDecoration: 'none', color:'white'}}>Nosotros</Link>
+                <Nav.Link className='text-light h5' href="/">
+                    <NavLink style={{color:'white', textDecoration:'none'}} to='/nosotros'>Nosotros</NavLink>
                 </Nav.Link>
 
             </Nav>

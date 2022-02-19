@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
 import { useState } from 'react';
 
 const Productos = () => {
@@ -21,14 +21,15 @@ const Productos = () => {
     }
 
     return (
-        <Container fluid>
+        <Container className='mt-3'>
             <Row>
                 <div className='text-center'>
                     <h3>Productos</h3>                    
                 </div>
+                <Dropdown.Divider />
                 {productos.map((pr) => 
                     <Col md={3}>
-                        <Card style={{ width: '13rem' }} className='mt-4'>
+                        <Card style={{ width: '15rem' }} className='mt-4'>
                             <Card.Img variant="top" src={pr.imagen}/>
                             <Card.Body>
                                 <Card.Title>{pr.nombre}</Card.Title>
