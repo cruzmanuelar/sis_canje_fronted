@@ -3,17 +3,40 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const Centros = () => {
 
     let [centros, setCentros] = useState([]);
+    let [puntos, setPuntos] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
 
+        const datosUsuario = async () => {
+
+            const response = await fetch('http://siscanj.herokuapp.com/public/api/user',{
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type':'application/json',
+                    'Authorization':`Bearer ${read_cookie('jwt')}`
+                },
+                credentials:'include'
+              
+            });
+
+            const content = await response.json();
+            console.log(content.puntos);
+            // setPuntos(content);
+        }
+
         obtenerCentros();
 
-    }, []);
+
+        datosUsuario();
+
+    }, [puntos]);
     
     const obtenerCentros = async () => {
         
@@ -27,11 +50,13 @@ const Centros = () => {
         navigate(`/centro/${id}`);
     }
 
+    
+
     return (
         <Container className='text-center mt-3'>
                 <Row>
                 <div className='text-center'>
-                    <h3>Centros</h3>                    
+                    <h3>Centros, ptos {puntos}</h3>                    
                 </div>
                 
                 <Dropdown.Divider />
@@ -49,7 +74,7 @@ const Centros = () => {
                     {centros.map((cen) => 
                     
                     
-                    <Col md={4} className=''>
+                    <Col md={4} className='' key={cen.id}>
                     <Card className='mt-4'>
                             <Card.Img variant="top" src={cen.imagen}/>
                             <Card.Body>

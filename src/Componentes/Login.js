@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
 
 const Login = () => {
 
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
-  const cookie_key = 'jwt';
+  const [redirect, setRedirect] = useState(false);
+
+  let navigate = useNavigate();
 
   const enviar = async (e) => {
 
@@ -15,7 +19,7 @@ const Login = () => {
 
     const response = await fetch('https://siscanj.herokuapp.com/public/api/login',{
       method: 'POST',
-      // credentials: 'include',
+      credentials: 'include',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
         correo,
@@ -25,14 +29,16 @@ const Login = () => {
 
     const content = await response.json();
 
-    // console.log(content.token);
+    let nuevaCookie = content.token;
 
-    sessionStorage.setItem('jwt', content.token);
+    bake_cookie('jwt', nuevaCookie);
 
-    let clave = sessionStorage.getItem('jwt');
-
-    console.log('El token es ' + clave);
+    setRedirect(true);
   
+  }
+
+  if(redirect){
+    navigate('/');
   }
 
   return (

@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Container, Nav, NavDropdown, Form, Button, Badge} from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
-const Navegacion = () => {
+const Navegacion = (props) => {
   return (
     <Navbar bg="dark" expand="lg">
         <Container fluid>
@@ -39,7 +39,7 @@ const Navegacion = () => {
                     <NavDropdown.Item href="#action4">Canjear puntos</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#action5">
-                        Mi perfil
+                        Mi perfil {props.nombre}
                     </NavDropdown.Item>
                 </NavDropdown>
                 <Button variant="danger outline-danger">

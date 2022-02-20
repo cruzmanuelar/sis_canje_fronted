@@ -7,8 +7,10 @@ import Centro from './Componentes/Centro';
 import NotFound from './Componentes/NotFound';
 import Login from './Componentes/Login';
 import Registro from './Componentes/Registro';
+import { useEffect, useState } from 'react';
 
 function App() {
+
   return (
 
     <BrowserRouter>
