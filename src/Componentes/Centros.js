@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import UserContext from '../context/users/UserContext';
+
 
 const Centros = () => {
 
     let [centros, setCentros] = useState([]);
-    let [puntos, setPuntos] = useState('');
     const navigate = useNavigate();
+
+    const { updateUser } = useContext(UserContext);
 
     useEffect(() => {
 
+        const obtenerCentros = async () => {
+        
+            const data = await fetch('http://siscanj.herokuapp.com/public/api/centros')
+            const centros = await data.json()
+            setCentros(centros.data);
+        };
+
+        const usuario = read_cookie('usuario');
+
+        console.log(usuario);
+
+        updateUser(usuario);
+        
         obtenerCentros();
 
-    }, [puntos]);
+    },[]);
+
     
-    const obtenerCentros = async () => {
-        
-        const data = await fetch('http://siscanj.herokuapp.com/public/api/centros')
-        const centros = await data.json()
-        setCentros(centros.data);
-    };
 
     const verCentro = (id) => {
         console.log(id);
@@ -33,7 +44,7 @@ const Centros = () => {
         <Container className='text-center mt-3'>
                 <Row>
                 <div className='text-center'>
-                    <h3>Centros, ptos {puntos}</h3>                    
+                    <h3>Centros</h3>                    
                 </div>
                 
                 <Dropdown.Divider />

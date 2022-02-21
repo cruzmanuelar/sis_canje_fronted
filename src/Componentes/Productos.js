@@ -1,27 +1,37 @@
-import React, { useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
+import React, { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import ReactLoading from 'react-loading';
-
+import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
+import UserContext from '../context/users/UserContext';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
 
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
+    const { updatePuntos, updateUser } = useContext(UserContext);
 
     useEffect(() => {
-        // delete_cookie('jwt');
-        // console.log('los datos');
+
+        const obtenerProductos = async () => {
+        
+            const data = await fetch('http://siscanj.herokuapp.com/public/api/productos')
+            const productos = await data.json()
+            setProductos(productos.data);
+        }
+
+        // const puntos = read_cookie('puntos');
+        const usuario = read_cookie('usuario');
+
+        console.log(usuario);
+
+        updateUser(usuario);
+
         obtenerProductos();
 
     }, []);
     
-    const obtenerProductos = async () => {
-        
-        const data = await fetch('http://siscanj.herokuapp.com/public/api/productos')
-        const productos = await data.json()
-        setProductos(productos.data);
-    }
+    
 
     return (
         <Container className='mt-3'>

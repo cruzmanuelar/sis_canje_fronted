@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import { useContext } from 'react';
-import UserContext from '../context/UserContext';
-import useUser from '../hooks/useUser';
+import UserContext from '../context/users/UserContext';
 
 const Login = () => {
 
@@ -16,7 +14,7 @@ const Login = () => {
 
   let navigate = useNavigate();
 
-  // const {value, setValue} = useContext(UserContext);
+  const { updatePuntos } = useContext(UserContext);
 
   const enviar = async (e) => {
 
@@ -42,15 +40,10 @@ const Login = () => {
     bake_cookie('usuario', usuario);
     bake_cookie('puntos', puntos);
 
-    let datosUsario = {
-      token:nuevaCookie,
-      usuario:usuario,
-      puntos:puntos
-    }
+    updatePuntos(puntos);
+    console.log(`Los nuevos puntos son ${puntos}`);
 
-    // setValue(datosUsario);
-    // console.log(value);
-    // setRedirect(true);
+    setRedirect(true);
 
   }
 

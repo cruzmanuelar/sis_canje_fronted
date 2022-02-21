@@ -1,13 +1,18 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
 import ReactLoading from 'react-loading';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import UserContext from '../context/users/UserContext';
+
 
 const Centro = () => {
 
   let [centro, setCentro] = useState([]);
   let [producto, setProductos] = useState([]);
+
+  const { updatePuntos, updateUser } = useContext(UserContext);
 
   const {id} = useParams();
   const navigate = useNavigate();
@@ -27,6 +32,10 @@ const Centro = () => {
     };
 
     obtenerCentros();
+
+    const usuario = read_cookie('usuario');
+    console.log(usuario);
+    updateUser(usuario);
 
   }, [url]);
 
