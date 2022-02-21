@@ -1,15 +1,29 @@
 import React, { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import ReactLoading from 'react-loading';
-import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, Dropdown, Alert} from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
-    const { updatePuntos, updateUser } = useContext(UserContext);
+    const { user, updatePuntos, updateUser } = useContext(UserContext);
+
+    const notify = () => toast.error("Debes iniciar sesion!",{
+        theme: "colored"
+    });
+
+    const canjearProducto = () =>{
+        if(user == ''){
+            notify();
+        }else{
+            console.log('Ok, vamos a ver tus credenciales');
+        }
+    }
 
     useEffect(() => {
 
@@ -20,10 +34,7 @@ const Productos = () => {
             setProductos(productos.data);
         }
 
-        // const puntos = read_cookie('puntos');
         const usuario = read_cookie('usuario');
-
-        console.log(usuario);
 
         updateUser(usuario);
 
@@ -36,6 +47,9 @@ const Productos = () => {
     return (
         <Container className='mt-3'>
             <Row>
+                <div>
+                    <ToastContainer position='bottom-right' hideProgressBar={true} />
+                </div>
                 <div className='text-center'>
                     <h3>Productos</h3>                    
                 </div>
@@ -63,7 +77,7 @@ const Productos = () => {
                                 <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
                                 </h5>
                                 </Card.Text>
-                                <Button variant="primary">Canjear producto</Button>
+                                <Button onClick={canjearProducto} variant="primary">Canjear producto</Button>
                             </Card.Body>
                         </Card>
                     </Col>

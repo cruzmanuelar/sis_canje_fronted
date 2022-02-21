@@ -20,28 +20,6 @@ const Navegacion = () => {
     useEffect(()=>{
 
     },[user])
-
-    // const [puntos, setPuntos] = useState(null);
-
-    // const [autenticado, setAutenticado] = useState(false);
-
-    // const [micookie, setMicookie] = useState(read_cookie('puntos'));
-
-    // // setPuntos(read_cookie('puntos'));
-
-    // let tamanio = read_cookie('puntos').length;
-    // console.log(`Tamano: ${tamanio}`);
-
-    // useEffect(() => {
-
-    //     if(tamanio == undefined){
-    //         console.log('Estas logeado');
-    //         setAutenticado(true);
-    //     }else{
-    //         console.log('No estas logeado');
-    //     }
-
-    // },[micookie]);
     
 
   return (

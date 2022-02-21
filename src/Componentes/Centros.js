@@ -25,8 +25,6 @@ const Centros = () => {
 
         const usuario = read_cookie('usuario');
 
-        console.log(usuario);
-
         updateUser(usuario);
         
         obtenerCentros();
