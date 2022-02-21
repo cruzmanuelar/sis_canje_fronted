@@ -13,28 +13,7 @@ const Centros = () => {
 
     useEffect(() => {
 
-        const datosUsuario = async () => {
-
-            const response = await fetch('http://siscanj.herokuapp.com/public/api/user',{
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type':'application/json',
-                    'Authorization':`Bearer ${read_cookie('jwt')}`
-                },
-                credentials:'include'
-              
-            });
-
-            const content = await response.json();
-            console.log(content.puntos);
-            // setPuntos(content);
-        }
-
         obtenerCentros();
-
-
-        datosUsuario();
 
     }, [puntos]);
     
@@ -49,8 +28,6 @@ const Centros = () => {
         console.log(id);
         navigate(`/centro/${id}`);
     }
-
-    
 
     return (
         <Container className='text-center mt-3'>

@@ -3,13 +3,15 @@ import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstr
 import { useState } from 'react';
 import ReactLoading from 'react-loading';
 
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
 
     useEffect(() => {
-
-        console.log('los datos');
+        // delete_cookie('jwt');
+        // console.log('los datos');
         obtenerProductos();
 
     }, []);
@@ -40,7 +42,7 @@ const Productos = () => {
                 :
                 <Row>
                 {productos.map((pr) => 
-                    <Col md={3}>
+                    <Col md={3} key={pr.id}>
                         <Card style={{ width: '15rem' }} className='mt-4'>
                             <Card.Img variant="top" src={pr.imagen}/>
                             <Card.Body>

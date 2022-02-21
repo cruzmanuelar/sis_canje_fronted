@@ -71,7 +71,7 @@ const Centro = () => {
           <Dropdown.Divider />
             <Row className=''>
               {producto.map((pr) => 
-                <Col md={3}>
+                <Col md={3} key={pr.id}>
                   <Card className='mt-4'>
                   <Card.Img variant="top" src={pr.imagen}/>
                   <Card.Body>
