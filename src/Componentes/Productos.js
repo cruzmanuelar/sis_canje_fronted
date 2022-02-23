@@ -1,29 +1,24 @@
 import React, { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import ReactLoading from 'react-loading';
-import { Container, Row, Col, Card, Button, Badge, Dropdown, Alert} from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, Dropdown } from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { read_cookie } from 'sfcookies';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
     const { user, updatePuntos, updateUser } = useContext(UserContext);
 
-    const notify = () => toast.error("Debes iniciar sesion!",{
-        theme: "colored"
+    const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
+        theme: "dark"
     });
 
-    const canjearProducto = () =>{
-        if(user == ''){
-            notify();
-        }else{
-            console.log('Ok, vamos a ver tus credenciales');
-        }
-    }
+    const puntosInsuficientes = () => toast.warning("No cuentas con suficientes puntos!",{
+        theme: "dark"
+    });
 
     useEffect(() => {
 
@@ -35,15 +30,48 @@ const Productos = () => {
         }
 
         const usuario = read_cookie('usuario');
+        const puntos = read_cookie('puntos');
 
         updateUser(usuario);
+        updatePuntos(puntos);
 
         obtenerProductos();
 
     }, []);
-    
-    
 
+    const canjearProducto = async (id) =>{
+
+        const response = await fetch('https://siscanj.herokuapp.com/public/api/canjepuntos',{
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${read_cookie('jwt')}`
+            },
+            body: JSON.stringify({
+                id_producto:id,
+            })
+        });
+
+        const content = await response.json();
+
+        if(content.message == 'No cuentas con suficientes puntos'){
+            puntosInsuficientes();
+        }else{
+            console.log('tienes puntos ps');
+        }
+    }
+
+    const validarPuntos = (id) => {
+
+        if(user == ''){
+            alertaNoLogeado();
+        }else{
+
+            canjearProducto(id);
+        }
+    }
+    
     return (
         <Container className='mt-3'>
             <Row>
@@ -77,7 +105,7 @@ const Productos = () => {
                                 <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
                                 </h5>
                                 </Card.Text>
-                                <Button onClick={canjearProducto} variant="primary">Canjear producto</Button>
+                                <Button onClick={() => validarPuntos(pr.id)} variant="primary">Canjear producto</Button>
                             </Card.Body>
                         </Card>
                     </Col>

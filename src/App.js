@@ -8,6 +8,7 @@ import NotFound from './Componentes/NotFound';
 import Login from './Componentes/Login';
 import Registro from './Componentes/Registro';
 import UserState from './context/users/UserState';
+import ProductosCanjeados from './Componentes/ProductosCanjeados';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
             <Route path='/Centros' element={<Centros/>}/>
             <Route path='/centro/:id' element={<Centro/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/canjes' element={<ProductosCanjeados/>}/>
             <Route path='/registro' element={<Registro/>}/>
             <Route path='*' element={<NotFound/>}/>
 

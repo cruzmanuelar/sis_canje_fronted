@@ -3,16 +3,15 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import UserContext from '../context/users/UserContext';
-
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const Centros = () => {
 
     let [centros, setCentros] = useState([]);
     const navigate = useNavigate();
 
-    const { updateUser } = useContext(UserContext);
+    const { user, updateUser, updatePuntos } = useContext(UserContext);
 
     useEffect(() => {
 
@@ -22,19 +21,18 @@ const Centros = () => {
             const centros = await data.json()
             setCentros(centros.data);
         };
-
+        
         const usuario = read_cookie('usuario');
+        const puntos = read_cookie('puntos');
 
         updateUser(usuario);
-        
+        updatePuntos(puntos);
+
         obtenerCentros();
 
     },[]);
 
-    
-
     const verCentro = (id) => {
-        console.log(id);
         navigate(`/centro/${id}`);
     }
 

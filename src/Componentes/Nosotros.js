@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { Button,} from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
 
 
@@ -10,13 +11,19 @@ const Nosotros = () => {
     useEffect(()=>{
 
       const usuario = read_cookie('usuario');
+      const puntos = read_cookie('puntos');
       console.log(usuario);
       updateUser(usuario);
+      updatePuntos(puntos);
 
     },[])
 
   return (
-    <div>Nosotros</div>
+    <div>
+      <Button>
+        Canjear puntos
+      </Button>
+    </div>
   )
 }
 

@@ -3,16 +3,17 @@ import { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
 import ReactLoading from 'react-loading';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import UserContext from '../context/users/UserContext';
-
+import { ToastContainer, toast } from 'react-toastify';
+import { read_cookie } from 'sfcookies';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Centro = () => {
 
   let [centro, setCentro] = useState([]);
   let [producto, setProductos] = useState([]);
 
-  const { updatePuntos, updateUser } = useContext(UserContext);
+  const { user, updateUser, updatePuntos } = useContext(UserContext);
 
   const {id} = useParams();
   const navigate = useNavigate();
@@ -20,8 +21,6 @@ const Centro = () => {
   let url = `http://siscanj.herokuapp.com/public/api/centro-${id}`;
 
   useEffect(() => {
-
-    console.log('los datos');
 
     const obtenerCentros = async () => {
 
@@ -31,21 +30,66 @@ const Centro = () => {
       setProductos(centros.productos);
     };
 
+    const usuario = read_cookie('usuario');
+    const puntos = read_cookie('puntos');
+
+    updateUser(usuario);
+    updatePuntos(puntos);
+    
     obtenerCentros();
 
-    const usuario = read_cookie('usuario');
-    console.log(usuario);
-    updateUser(usuario);
-
   }, [url]);
+
+  const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
+    theme: "dark"
+  });
+
+  const puntosInsuficientes = () => toast.warning("No cuentas con suficientes puntos!",{
+      theme: "dark"
+  });
 
   const irCentros = () => {
     navigate('/centros');
   }
 
+  const canjearProducto = async (id) =>{
+
+    const response = await fetch('https://siscanj.herokuapp.com/public/api/canjepuntos',{
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${read_cookie('jwt')}`
+        },
+        body: JSON.stringify({
+            id_producto:id,
+        })
+    });
+
+    const content = await response.json();
+
+    if(content.message == 'No cuentas con suficientes puntos'){
+        puntosInsuficientes();
+    }else{
+        console.log('tienes puntos ps');
+    }
+  }
+
+  const validarPuntos = (id) => {
+
+      if(user == ''){
+          alertaNoLogeado();
+      }else{
+
+          canjearProducto(id);
+      }
+  }
 
   return (
     <Container fluid className='mt-3'>
+      <div>
+        <ToastContainer position='bottom-right' hideProgressBar={true} />
+      </div>
       {centro.length === 0 ?
         <Row
         style={{
@@ -91,7 +135,7 @@ const Centro = () => {
                       <Badge bg="warning">{pr.cantidad} disp</Badge>
                     </h5>
                     </Card.Text>
-                    <Button variant="primary">Canjear</Button>
+                    <Button onClick={() => validarPuntos(pr.id)} variant="primary">Canjear</Button>
                   </Card.Body>
                   </Card>
                 </Col>
