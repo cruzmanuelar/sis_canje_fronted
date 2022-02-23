@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ReactLoading from 'react-loading';
 import { Container, Row, Col, Card, Button, Badge, Dropdown } from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
-import { read_cookie } from 'sfcookies';
+import { read_cookie, bake_cookie } from 'sfcookies';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,7 +39,7 @@ const Productos = () => {
 
     }, []);
 
-    const canjearProducto = async (id) =>{
+    const canjearProducto = async (id, puntosProducto) =>{
 
         const response = await fetch('https://siscanj.herokuapp.com/public/api/canjepuntos',{
             method: 'POST',
@@ -59,16 +59,21 @@ const Productos = () => {
             puntosInsuficientes();
         }else{
             console.log('tienes puntos ps');
+            const puntosAntes = read_cookie('puntos');
+            const puntosAhora = puntosAntes - puntosProducto;
+            bake_cookie('puntos', puntosAhora);
+            updatePuntos(puntosAhora);
+
         }
     }
 
-    const validarPuntos = (id) => {
+    const validarPuntos = (id, puntosProducto) => {
 
         if(user == ''){
             alertaNoLogeado();
         }else{
 
-            canjearProducto(id);
+            canjearProducto(id, puntosProducto);
         }
     }
     
@@ -105,7 +110,7 @@ const Productos = () => {
                                 <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
                                 </h5>
                                 </Card.Text>
-                                <Button onClick={() => validarPuntos(pr.id)} variant="primary">Canjear producto</Button>
+                                <Button onClick={() => validarPuntos(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
                             </Card.Body>
                         </Card>
                     </Col>

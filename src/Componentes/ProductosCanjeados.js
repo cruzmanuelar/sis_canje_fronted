@@ -13,11 +13,18 @@ const ProductosCanjeados = () => {
 
         const obtenerCanjes = async () => {
 
-            const data = await fetch('http://siscanj.herokuapp.com/public/api/productos')
-            const productos = await data.json()
+            const response = await fetch('https://siscanj.herokuapp.com/public/api/misCanjes',{
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization':`Bearer ${read_cookie('jwt')}`
+                }
+            });
 
-            setProductos(productos.data);
-        
+            const content = await response.json();
+            setProductos(content.productos)
+
         }
 
         const usuario = read_cookie('usuario');
