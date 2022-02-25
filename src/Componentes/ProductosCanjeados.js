@@ -72,8 +72,8 @@ const ProductosCanjeados = () => {
                                         <td style={{width:'20%'}}>
                                             <img style={{width:'50%', height:'50%'}} alt={pr.nombre} src={pr.imagen}/>
                                         </td>
-                                        <td className='align-middle'> puntos</td>
-                                        <td className='align-middle'>Imagen</td>
+                                        <td className='align-middle'>{pr.puntos} puntos</td>
+                                        <td className='align-middle'>{pr.created_at}</td>
                                     </tr>
                                 )   
                             }
