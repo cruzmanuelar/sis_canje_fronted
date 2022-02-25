@@ -4,21 +4,24 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Badge, Dropdown} from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import UserContext from '../context/users/UserContext';
-import { ToastContainer, toast } from 'react-toastify';
-import { read_cookie } from 'sfcookies';
+import { ToastContainer } from 'react-toastify';
+import { read_cookie, bake_cookie } from 'sfcookies';
 import 'react-toastify/dist/ReactToastify.css';
+import { puntosInsuficientes, alertaNoLogeado } from './alertas/alertasToastify';
+import { ActualizarPuntos } from '../transacciones/Puntos';
+import { canjeProducto, centroId } from '../Rutas';
 
 const Centro = () => {
+
+  const { user, updateUser, updatePuntos } = useContext(UserContext);
 
   let [centro, setCentro] = useState([]);
   let [producto, setProductos] = useState([]);
 
-  const { user, updateUser, updatePuntos } = useContext(UserContext);
-
   const {id} = useParams();
   const navigate = useNavigate();
 
-  let url = `http://siscanj.herokuapp.com/public/api/centro-${id}`;
+  let url = `${centroId}-${id}`;
 
   useEffect(() => {
 
@@ -40,21 +43,13 @@ const Centro = () => {
 
   }, [url]);
 
-  const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
-    theme: "dark"
-  });
-
-  const puntosInsuficientes = () => toast.warning("No cuentas con suficientes puntos!",{
-      theme: "dark"
-  });
-
   const irCentros = () => {
     navigate('/centros');
   }
 
-  const canjearProducto = async (id) =>{
+  const canjearProducto = async (id, puntosProducto) =>{
 
-    const response = await fetch('https://siscanj.herokuapp.com/public/api/canjepuntos',{
+    const response = await fetch(canjeProducto,{
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -71,19 +66,21 @@ const Centro = () => {
     if(content.message == 'No cuentas con suficientes puntos'){
         puntosInsuficientes();
     }else{
-        console.log('tienes puntos ps');
+        
+        // const puntosAntes = read_cookie('puntos');
+        // const puntosAhora = puntosAntes - puntosProducto;
+        // bake_cookie('puntos', puntosAhora);
+        // updatePuntos(puntosAhora);
+        ActualizarPuntos();
+
     }
   }
 
-  const validarPuntos = (id) => {
+  const validarPuntos = (id, puntosProducto) => {
 
-      if(user == ''){
-          alertaNoLogeado();
-      }else{
-
-          canjearProducto(id);
-      }
+    user == '' ? alertaNoLogeado() : canjearProducto(id, puntosProducto);
   }
+
 
   return (
     <Container fluid className='mt-3'>
@@ -135,7 +132,7 @@ const Centro = () => {
                       <Badge bg="warning">{pr.cantidad} disp</Badge>
                     </h5>
                     </Card.Text>
-                    <Button onClick={() => validarPuntos(pr.id)} variant="primary">Canjear</Button>
+                    <Button onClick={() => validarPuntos(pr.id, pr.precio_puntos)} variant="primary">Canjear</Button>
                   </Card.Body>
                   </Card>
                 </Col>

@@ -1,30 +1,24 @@
-import React, { useEffect, useContext } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import ReactLoading from 'react-loading';
 import { Container, Row, Col, Card, Button, Badge, Dropdown } from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
-import { read_cookie, bake_cookie } from 'sfcookies';
-import { ToastContainer, toast } from 'react-toastify';
+import { read_cookie } from 'sfcookies';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { puntosInsuficientes, alertaNoLogeado } from './alertas/alertasToastify';
+import { getProductos, canjeProducto } from '../Rutas';
+import { ActualizarPuntos } from '../transacciones/Puntos';
 
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
     const { user, updatePuntos, updateUser } = useContext(UserContext);
 
-    const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
-        theme: "dark"
-    });
-
-    const puntosInsuficientes = () => toast.warning("No cuentas con suficientes puntos!",{
-        theme: "dark"
-    });
-
     useEffect(() => {
 
         const obtenerProductos = async () => {
         
-            const data = await fetch('http://siscanj.herokuapp.com/public/api/productos')
+            const data = await fetch(getProductos)
             const productos = await data.json()
             setProductos(productos.data);
         }
@@ -41,7 +35,7 @@ const Productos = () => {
 
     const canjearProducto = async (id, puntosProducto) =>{
 
-        const response = await fetch('https://siscanj.herokuapp.com/public/api/canjepuntos',{
+        const response = await fetch(canjeProducto,{
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -56,25 +50,21 @@ const Productos = () => {
         const content = await response.json();
 
         if(content.message == 'No cuentas con suficientes puntos'){
+
             puntosInsuficientes();
         }else{
-            console.log('tienes puntos ps');
-            const puntosAntes = read_cookie('puntos');
-            const puntosAhora = puntosAntes - puntosProducto;
-            bake_cookie('puntos', puntosAhora);
-            updatePuntos(puntosAhora);
 
+            ActualizarPuntos();
+            // const puntosAntes = read_cookie('puntos');
+            // const puntosAhora = puntosAntes - puntosProducto;
+            // bake_cookie('puntos', puntosAhora);
+            // updatePuntos(puntosAhora);
         }
     }
 
     const validarPuntos = (id, puntosProducto) => {
 
-        if(user == ''){
-            alertaNoLogeado();
-        }else{
-
-            canjearProducto(id, puntosProducto);
-        }
+        user == '' ? alertaNoLogeado() : canjearProducto(id, puntosProducto);
     }
     
     return (

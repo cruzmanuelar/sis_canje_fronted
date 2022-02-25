@@ -1,23 +1,23 @@
-import React, { useContext } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import UserContext from '../context/users/UserContext';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { read_cookie } from 'sfcookies';
+import { getCentros } from '../Rutas';
 
 const Centros = () => {
 
+    const { updateUser, updatePuntos } = useContext(UserContext);
+    
     let [centros, setCentros] = useState([]);
     const navigate = useNavigate();
-
-    const { user, updateUser, updatePuntos } = useContext(UserContext);
 
     useEffect(() => {
 
         const obtenerCentros = async () => {
-        
-            const data = await fetch('http://siscanj.herokuapp.com/public/api/centros')
+            
+            const data = await fetch(getCentros)
             const centros = await data.json()
             setCentros(centros.data);
         };
@@ -56,7 +56,6 @@ const Centros = () => {
                 :
                 <Row>
                     {centros.map((cen) => 
-                    
                     
                     <Col md={4} className='' key={cen.id}>
                     <Card className='mt-4'>

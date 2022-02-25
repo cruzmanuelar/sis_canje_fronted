@@ -12,7 +12,6 @@ const Nosotros = () => {
 
       const usuario = read_cookie('usuario');
       const puntos = read_cookie('puntos');
-      console.log(usuario);
       updateUser(usuario);
       updatePuntos(puntos);
 

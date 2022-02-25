@@ -1,25 +1,25 @@
 import React, { useState,useContext } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { bake_cookie } from 'sfcookies';
 import UserContext from '../context/users/UserContext';
+import { login } from "../Rutas";
 
 const Login = () => {
 
+  const { updatePuntos, updateUser } = useContext(UserContext);
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState(false);
 
   let navigate = useNavigate();
-
-  const { updatePuntos, updateUser } = useContext(UserContext);
 
   const enviar = async (e) => {
 
     e.preventDefault();
 
-    const response = await fetch('https://siscanj.herokuapp.com/public/api/login',{
+    const response = await fetch(login,{
       method: 'POST',
       credentials: 'include',
       headers: {'Content-Type':'application/json'},
@@ -31,45 +31,53 @@ const Login = () => {
 
     const content = await response.json();
 
-    let nuevaCookie = content.token;
-    let usuario = content.user;
-    let puntos = content.puntos;
+    if(content.message == 'Bienvenido'){
 
-    bake_cookie('jwt', nuevaCookie);
-    bake_cookie('usuario', usuario);
-    bake_cookie('puntos', puntos);
+      let nuevaCookie = content.token;
+      let usuario = content.user;
+      let puntos = content.puntos;
+    
+      bake_cookie('jwt', nuevaCookie);
+      bake_cookie('usuario', usuario);
+      bake_cookie('puntos', puntos);
+    
+      updatePuntos(puntos);
+      updateUser(usuario);
 
-    updatePuntos(puntos);
-    updateUser(usuario);
+      navigate('/');
 
-    console.log(`Los nuevos puntos son ${puntos}`);
+    }else{
 
-    setRedirect(true);
-  }
+      console.log('Pa fuera pa la calle');
+    }
 
-  if(redirect){
-    navigate('/');
   }
 
   return (
-    <div>
-      <Form onSubmit={enviar}>
-        <Form.Group className="mb-3">
-          <Form.Label>Correo electronico</Form.Label>
-          <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
-        </Form.Group>
+    <Container>
+      <Row className='mt-4'>
+        <Col></Col>
+        <Col md={4}>
+          <Form onSubmit={enviar}>
+          <Form.Group className="mb-3">
+            <Form.Label>Correo electronico</Form.Label>
+            <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
+          </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Contrasena</Form.Label>
-          <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
-        </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Contrasena</Form.Label>
+            <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-            Ingresar
-        </Button>
-        
-      </Form>
-    </div>
+          <Button variant="primary" type="submit">
+              Ingresar
+          </Button>
+          
+        </Form>
+        </Col>
+        <Col></Col>
+      </Row>
+    </Container>
   );
 };
 

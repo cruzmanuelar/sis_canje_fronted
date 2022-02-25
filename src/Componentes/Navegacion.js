@@ -3,12 +3,13 @@ import { Navbar, Container, Nav, NavDropdown, Button, Badge, Form } from 'react-
 import { NavLink } from "react-router-dom";
 import UserContext from '../context/users/UserContext';
 import { delete_cookie, read_cookie, bake_cookie } from 'sfcookies';
-import './customModal.css';
-import { ToastContainer, toast } from 'react-toastify';
+import '../estilos/customModal.css';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { canjeExitoso, codigoInvalido } from './alertas/alertasToastify';
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import { canjePuntos } from '../Rutas';
 
 const Navegacion = () => {
 
@@ -16,23 +17,9 @@ const Navegacion = () => {
     const [ modal, setModal ] = useState(false);
     const [ codigo, setCodigo] = useState('');
 
-    const canjeExitoso = (message) => toast.success(`¡${message}!`,{
-        theme: "dark"
-    });
+    const abrirModal = () => setModal(true);
 
-
-    const codigoInvalido = (message) => toast.error(`¡${message}`,{
-        theme: "dark"
-    });
-
-
-    const abrirModal = () => {
-        setModal(true);
-    }
-
-    const cerrarModal = () => {
-        setModal(false);
-    }
+    const cerrarModal = () => setModal(false);
 
     const cerrarSesion = () => {
 
@@ -50,7 +37,7 @@ const Navegacion = () => {
 
     const canjearPuntos = async () =>{
 
-        const response = await fetch('https://siscanj.herokuapp.com/public/api/canje',{
+        const response = await fetch(canjePuntos,{
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -159,8 +146,6 @@ const Navegacion = () => {
                 </>
                 }
                 
-                
-
             </Navbar.Collapse>
         </Container>
     </Navbar>

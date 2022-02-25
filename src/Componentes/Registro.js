@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button, Form } from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { registro } from '../Rutas';
 
 
 const Registro = () => {
@@ -18,7 +18,7 @@ const Registro = () => {
 
     e.preventDefault();
 
-    const response = await fetch('http://siscanj.herokuapp.com/public/api/registro',{
+    const response = await fetch(registro,{
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({

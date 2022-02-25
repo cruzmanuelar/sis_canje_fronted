@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { read_cookie } from 'sfcookies';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import UserContext from '../context/users/UserContext';
 import ReactLoading from 'react-loading';
+import { getCanjes } from '../Rutas';
 
 const ProductosCanjeados = () => {
 
     const [ productos, setProductos ] = useState([]);
-    const { user, updateUser, updatePuntos } = useContext(UserContext);
+    const { updateUser, updatePuntos } = useContext(UserContext);
 
     useEffect(()=>{
 
         const obtenerCanjes = async () => {
 
-            const response = await fetch('https://siscanj.herokuapp.com/public/api/misCanjes',{
+            const response = await fetch(getCanjes,{
                 method: 'GET',
                 credentials: 'include',
                 headers: {
