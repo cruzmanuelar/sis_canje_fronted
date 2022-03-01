@@ -6,14 +6,12 @@ import ReactLoading from 'react-loading';
 import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { read_cookie, bake_cookie } from 'sfcookies';
-import 'react-toastify/dist/ReactToastify.css';
-import { puntosInsuficientes, alertaNoLogeado } from './alertas/alertasToastify';
-import { ActualizarPuntos } from '../transacciones/Puntos';
+import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
 import { canjeProducto, centroId } from '../Rutas';
 
 const Centro = () => {
 
-  const { user, updateUser, updatePuntos } = useContext(UserContext);
+  const { puntos, updateUser, updatePuntos } = useContext(UserContext);
 
   let [centro, setCentro] = useState([]);
   let [producto, setProductos] = useState([]);
@@ -32,16 +30,10 @@ const Centro = () => {
       setCentro(centros.centro);
       setProductos(centros.productos);
     };
-
-    const usuario = read_cookie('usuario');
-    const puntos = read_cookie('puntos');
-
-    updateUser(usuario);
-    updatePuntos(puntos);
     
     obtenerCentros();
 
-  }, [url]);
+  }, []);
 
   const irCentros = () => {
     navigate('/centros');
@@ -49,12 +41,16 @@ const Centro = () => {
 
   const canjearProducto = async (id, puntosProducto) =>{
 
+    if(puntos < puntosProducto){
+        return puntosInsuficientes();
+    }
+
     const response = await fetch(canjeProducto,{
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type':'application/json',
-            'Authorization':`Bearer ${read_cookie('jwt')}`
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
             id_producto:id,
@@ -63,22 +59,24 @@ const Centro = () => {
 
     const content = await response.json();
 
-    if(content.message == 'No cuentas con suficientes puntos'){
+    if(content.Message === 'No cuentas con suficientes puntos'){
+
         puntosInsuficientes();
+
     }else{
-        
-        // const puntosAntes = read_cookie('puntos');
-        // const puntosAhora = puntosAntes - puntosProducto;
-        // bake_cookie('puntos', puntosAhora);
-        // updatePuntos(puntosAhora);
-        ActualizarPuntos();
 
+        const puntosNuevos = content.puntos;
+        localStorage.setItem('puntos', puntosNuevos);
+        updatePuntos(puntosNuevos);
+        canjeExitoso(content.Message);
     }
-  }
+}
 
-  const validarPuntos = (id, puntosProducto) => {
+  const validarUsuario = (id, puntosProducto) => {
 
-    user == '' ? alertaNoLogeado() : canjearProducto(id, puntosProducto);
+    const token = localStorage.getItem('token');
+
+    token === null ? alertaNoLogeado() : canjearProducto(id, puntosProducto);
   }
 
 
@@ -126,13 +124,11 @@ const Centro = () => {
                   <Card.Img variant="top" src={pr.imagen}/>
                   <Card.Body>
                     <Card.Title>{pr.nombre}</Card.Title>
-                    <Card.Text>
-                    <h5>
+                    <Card.Text className='h5'>
                       <Badge bg="danger">{pr.precio_puntos} ptos</Badge>{' '}
                       <Badge bg="warning">{pr.cantidad} disp</Badge>
-                    </h5>
                     </Card.Text>
-                    <Button onClick={() => validarPuntos(pr.id, pr.precio_puntos)} variant="primary">Canjear</Button>
+                    <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear</Button>
                   </Card.Body>
                   </Card>
                 </Col>
@@ -141,9 +137,8 @@ const Centro = () => {
           </Col>
         </Row>
       }
-      
     </Container>
   )
 }
 
-export default Centro
+export default Centro;

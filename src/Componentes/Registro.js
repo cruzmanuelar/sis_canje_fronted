@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row, Container, Col, Image, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { registro } from '../Rutas';
 
@@ -7,7 +7,7 @@ import { registro } from '../Rutas';
 const Registro = () => {
 
   const [nombre, setNombre] = useState('');
-  const [correo, setEmail] = useState('');
+  const [correo, setCorreo] = useState('');
   const [dni, setDni] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
@@ -29,6 +29,8 @@ const Registro = () => {
       })
     });
 
+    console.log(response);
+
     setRedirect(true);
   
   }
@@ -40,34 +42,50 @@ const Registro = () => {
   }
 
   return (
-    <div>
-      <Form onSubmit={enviar}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nombre de usuario</Form.Label>
-          <Form.Control type="text" onChange={ e => setNombre(e.target.value)} placeholder="Usuario" />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Correo electronico</Form.Label>
-          <Form.Control type="email" onChange={ e => setEmail(e.target.value)} placeholder="Correo electronico" />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>DNI</Form.Label>
-          <Form.Control type="text" onChange={ e => setDni(e.target.value)} placeholder="8 Digitos" />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Contrasena</Form.Label>
-          <Form.Control type="password" onChange={ e => setPassword(e.target.value)} placeholder="Password" />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-            Registrarse
-        </Button>
+    <Container fluid className='p-4 bt-white'>
+    <Row>
+      <Col sm={0}></Col>
+      <Col md={4} className=''>
+        <Form onSubmit={enviar} className='border border-secondary rounded p-3 bg-secondary text-white'>
+          
+          <div className='text-center my-2'>
+          <h3>Registro - CoKanje</h3>
+            <Image fluid src='/images/botellasplasticas.jpg' className='border rounded' style={{width:'25vh', height:'25vh'}}></Image>
+          </div>
+          <Dropdown.Divider />
+          <Row>
+            <Col>
+            <Form.Group className="my-2">
+              <Form.Label>Nombre de usuario</Form.Label>
+              <Form.Control type="text" onChange={e => setNombre(e.target.value)} placeholder="Usuario" />
+            </Form.Group>
+            </Col>
+            <Col>
+            <Form.Group className="my-2">
+              <Form.Label>DNI</Form.Label>
+              <Form.Control type="text" onChange={e => setDni(e.target.value)} placeholder="DNI" />
+            </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="my-2">
+            <Form.Label>Correo electronico</Form.Label>
+            <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Contrasena</Form.Label>
+            <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
+          </Form.Group>
+          <div className="d-grid gap-2">
+            <Button variant="primary" type="submit">
+                Registrarse
+            </Button>
+          </div>
         
-      </Form>
-    </div>
+        </Form>
+      </Col>
+      <Col sm={0}></Col>
+    </Row>
+  </Container>
   )
 }
 

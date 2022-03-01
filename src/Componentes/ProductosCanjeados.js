@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { read_cookie } from 'sfcookies';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-import UserContext from '../context/users/UserContext';
 import ReactLoading from 'react-loading';
 import { getCanjes } from '../Rutas';
 
 const ProductosCanjeados = () => {
 
     const [ productos, setProductos ] = useState([]);
-    const { updateUser, updatePuntos } = useContext(UserContext);
+    const [ cargando, setCargando ] = useState(true);
 
     useEffect(()=>{
 
@@ -19,22 +17,18 @@ const ProductosCanjeados = () => {
                 credentials: 'include',
                 headers: {
                     'Content-Type':'application/json',
-                    'Authorization':`Bearer ${read_cookie('jwt')}`
+                    'Authorization':`Bearer ${localStorage.getItem('token')}`
                 }
             });
 
             const content = await response.json();
-            setProductos(content.productos)
+            setProductos(content.productos);
+            setCargando(false);
 
         }
 
-        const usuario = read_cookie('usuario');
-        const puntos = read_cookie('puntos');
-
-        updateUser(usuario);
-        updatePuntos(puntos);
-
         obtenerCanjes();
+
     },[])
 
     return (
@@ -57,7 +51,7 @@ const ProductosCanjeados = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {productos.length === 0 ?
+                            {cargando ?
                                 <Row
                                 style={{
                                 position: 'absolute', left: '46%', top: '50%'
@@ -66,19 +60,25 @@ const ProductosCanjeados = () => {
                                 <ReactLoading type={'bubbles'} color="black" height={'10%'} width={'10%'}></ReactLoading>
                                 </Row>
                             :
+                                productos.length === 0?
+                                
+                                <tr className='text-center'>
+                                    <td className='h3' colSpan={5}>Aun no has canjeado algun producto</td>
+                                </tr>
+                                
+                                :
                                 productos.map((pr, index) => 
                                     <tr key={pr.id} className='text-center justify-content-center'>
                                         <td className='align-middle'>{index + 1}</td>
                                         <td className='align-middle'>{pr.nombre}</td>
                                         <td style={{width:'20%'}}>
-                                            <img style={{width:'50%', height:'50%'}} alt={pr.nombre} src={pr.imagen}/>
+                                            <img className='border border-rounded' style={{width:'50%', height:'50%'}} alt={pr.nombre} src={pr.imagen}/>
                                         </td>
                                         <td className='align-middle'>{pr.puntos} puntos</td>
                                         <td className='align-middle'>{pr.created_at}</td>
                                     </tr>
-                                )   
+                                )
                             }
-
                         </tbody>
                     </Table>
                 </Col>
@@ -87,4 +87,4 @@ const ProductosCanjeados = () => {
     )
 }
 
-export default ProductosCanjeados
+export default ProductosCanjeados;

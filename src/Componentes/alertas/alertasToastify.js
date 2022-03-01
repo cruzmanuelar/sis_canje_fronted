@@ -6,14 +6,14 @@ const puntosInsuficientes = () => toast.warning("No cuentas con suficientes punt
 });
 
 const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
-    theme: "dark"
-});
-
-const canjeExitoso = (message) => toast.success(`¡${message}!`,{
-    theme: "dark"
+    theme: "dark",
 });
 
 const codigoInvalido = (message) => toast.error(`¡${message}`,{
+    theme: "dark",
+});
+
+const canjeExitoso = (message) => toast.success(`¡${message}!`,{
     theme: "dark"
 });
 

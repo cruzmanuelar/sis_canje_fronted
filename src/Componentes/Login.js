@@ -1,15 +1,12 @@
 import React, { useState,useContext } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Container, Row, Col, Button, Form, Dropdown, Image } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import { bake_cookie } from 'sfcookies';
 import UserContext from '../context/users/UserContext';
 import { login } from "../Rutas";
 
 const Login = () => {
 
-  const { updatePuntos, updateUser } = useContext(UserContext);
+  const { updatePuntos, updateAuth } = useContext(UserContext);
   const [correo, setCorreo] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,49 +30,52 @@ const Login = () => {
 
     if(content.message == 'Bienvenido'){
 
-      let nuevaCookie = content.token;
-      let usuario = content.user;
+      let token = content.token;
       let puntos = content.puntos;
-    
-      bake_cookie('jwt', nuevaCookie);
-      bake_cookie('usuario', usuario);
-      bake_cookie('puntos', puntos);
-    
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('puntos', puntos);
+      updateAuth(true);
       updatePuntos(puntos);
-      updateUser(usuario);
 
       navigate('/');
 
     }else{
-
-      console.log('Pa fuera pa la calle');
+      console.log('Unauthorized');
     }
 
   }
 
   return (
-    <Container>
-      <Row className='mt-4'>
-        <Col></Col>
-        <Col md={4}>
-          <Form onSubmit={enviar}>
-          <Form.Group className="mb-3">
-            <Form.Label>Correo electronico</Form.Label>
-            <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
-          </Form.Group>
+    <Container fluid className='p-4 bt-white'>
+      <Row>
+        <Col sm={0}></Col>
+        <Col md={4} className=''>
+          <Form onSubmit={enviar} className='border border-secondary rounded p-3 bg-secondary text-white'>
+            
+            <div className='text-center my-3'>
+            <h3>Iniciar sesion - CoKanje</h3>
+              <Image fluid src='/images/botellasplasticas.jpg' className='border rounded' style={{width:'25vh', height:'25vh'}}></Image>
+            </div>
+            <Dropdown.Divider />
+            <Form.Group className="my-3">
+              <Form.Label>Correo electronico</Form.Label>
+              <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Contrasena</Form.Label>
-            <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
-          </Form.Group>
-
-          <Button variant="primary" type="submit">
-              Ingresar
-          </Button>
+            <Form.Group className="mb-3">
+              <Form.Label>Contrasena</Form.Label>
+              <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
+            </Form.Group>
+            <div className="d-grid gap-2">
+              <Button variant="success" type="submit">
+                  Iniciar sesion
+              </Button>
+            </div>
           
-        </Form>
+          </Form>
         </Col>
-        <Col></Col>
+        <Col sm={0}></Col>
       </Row>
     </Container>
   );

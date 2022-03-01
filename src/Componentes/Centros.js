@@ -8,7 +8,7 @@ import { getCentros } from '../Rutas';
 
 const Centros = () => {
 
-    const { updateUser, updatePuntos } = useContext(UserContext);
+    const { updatePuntos } = useContext(UserContext);
     
     let [centros, setCentros] = useState([]);
     const navigate = useNavigate();
@@ -22,12 +22,6 @@ const Centros = () => {
             setCentros(centros.data);
         };
         
-        const usuario = read_cookie('usuario');
-        const puntos = read_cookie('puntos');
-
-        updateUser(usuario);
-        updatePuntos(puntos);
-
         obtenerCentros();
 
     },[]);
@@ -59,7 +53,7 @@ const Centros = () => {
                     
                     <Col md={4} className='' key={cen.id}>
                     <Card className='mt-4'>
-                            <Card.Img variant="top" src={cen.imagen}/>
+                            <Card.Img variant="top" className='' src={cen.imagen}/>
                             <Card.Body>
                                 <Card.Title>{cen.nombre}</Card.Title>
                                 
