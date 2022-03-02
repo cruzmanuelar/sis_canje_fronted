@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import UserContext from '../context/users/UserContext';
-import { read_cookie } from 'sfcookies';
 import { getCentros } from '../Rutas';
 
 const Centros = () => {
-
-    const { updatePuntos } = useContext(UserContext);
     
     let [centros, setCentros] = useState([]);
     const navigate = useNavigate();
@@ -28,6 +24,7 @@ const Centros = () => {
 
     const verCentro = (id) => {
         navigate(`/centro/${id}`);
+        
     }
 
     return (
@@ -40,12 +37,8 @@ const Centros = () => {
                 <Dropdown.Divider />
 
                 {centros.length === 0 ?
-                    <Row
-                    style={{
-                      position: 'absolute', left: '46%', top: '50%'
-                    }}
-                    >
-                      <ReactLoading type={'bubbles'} color="black" height={'10%'} width={'10%'}></ReactLoading>
+                    <Row style={{height:'100%'}} className='d-flex align-items-center justify-content-center'>
+                        <ReactLoading type={'bubbles'} color="black" height={'15%'} width={'15%'}></ReactLoading>
                     </Row>
                 :
                 <Row>

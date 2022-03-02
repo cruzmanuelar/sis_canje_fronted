@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button, Badge, Form } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Button, Badge, Form, Image } from 'react-bootstrap';
 import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
@@ -29,13 +29,17 @@ const Navegacion = (props) => {
     useEffect(()=>{
 
         const token = localStorage.getItem('token');
-        token != null ? updateAuth(true) : updateAuth(false);
+        token !== null ? updateAuth(true) : updateAuth(false);
         const puntos = localStorage.getItem('puntos');
-        puntos != null && updatePuntos(puntos);
+        puntos !== null && updatePuntos(puntos);
 
     },[]);
 
     const canjearPuntos = async () =>{
+
+        if(codigo.length != 8){
+            return codigoInvalido('Codigo invalido');
+        }
 
         const response = await fetch(canjePuntos,{
             method: 'POST',
@@ -51,17 +55,18 @@ const Navegacion = (props) => {
 
         const content = await response.json();
 
-        if(content.message != 'Código inválido'){
 
+        if(content.message == 'Código inválido' || content.status == 'error'){
+
+            cerrarModal();
+            codigoInvalido('Código inválido');
+
+        }else{
+            
             cerrarModal();
             canjeExitoso(content.message);
             const puntosNuevos = content.puntos;
             localStorage.setItem('puntos', puntosNuevos);
-
-        }else{
-
-            cerrarModal();
-            codigoInvalido(content.message);
         }
     }
 
@@ -86,7 +91,9 @@ const Navegacion = (props) => {
         </Modal>
 
         <Container fluid>
-            <Navbar.Brand className='text-light h2'>
+            <Navbar.Brand className='text-light h2 d-flex align-items-center'>
+                <Image src='images/iconoNav.png' style={{height:'35px'}}>
+                </Image>
                 CoKanje
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" className='border-secondary'/>
@@ -137,7 +144,6 @@ const Navegacion = (props) => {
                 </Button>
                 </>
                 }
-                
                 
             </Navbar.Collapse>
         </Container>

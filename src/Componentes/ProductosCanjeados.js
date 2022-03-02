@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
 import { getCanjes } from '../Rutas';
+import moment from 'moment';
+import 'moment/locale/es';
 
 const ProductosCanjeados = () => {
 
@@ -40,34 +42,46 @@ const ProductosCanjeados = () => {
                 </div>
 
                 <Col className='mt-2'>
-                    <Table striped bordered hover>
-                        <thead className='text-center'>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Imagen</th>
-                                <th>Costo</th>
-                                <th>Fecha de canje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {cargando ?
-                                <Row
-                                style={{
-                                position: 'absolute', left: '46%', top: '50%'
-                                }}
-                                >
-                                <ReactLoading type={'bubbles'} color="black" height={'10%'} width={'10%'}></ReactLoading>
-                                </Row>
-                            :
-                                productos.length === 0?
-                                
+
+                    {cargando ?
+                        <Row style={{height:'100%'}} className='d-flex align-items-center justify-content-center'>
+                            <ReactLoading type={'bubbles'} color="black" height={'15%'} width={'15%'}></ReactLoading>
+                        </Row>
+                    :
+                    productos.length === 0?
+
+                        <Table striped bordered hover>
+                            <thead className='text-center'>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Imagen</th>
+                                    <th>Costo</th>
+                                    <th>Fecha de canje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr className='text-center'>
                                     <td className='h3' colSpan={5}>Aun no has canjeado algun producto</td>
                                 </tr>
+
+                            </tbody>
+                        </Table>
                                 
-                                :
-                                productos.map((pr, index) => 
+                    :
+                        <Table striped bordered hover>
+                            <thead className='text-center'>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Imagen</th>
+                                    <th>Costo</th>
+                                    <th>Fecha de canje</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                {productos.map((pr, index) => 
+
                                     <tr key={pr.id} className='text-center justify-content-center'>
                                         <td className='align-middle'>{index + 1}</td>
                                         <td className='align-middle'>{pr.nombre}</td>
@@ -75,12 +89,13 @@ const ProductosCanjeados = () => {
                                             <img className='border border-rounded' style={{width:'50%', height:'50%'}} alt={pr.nombre} src={pr.imagen}/>
                                         </td>
                                         <td className='align-middle'>{pr.puntos} puntos</td>
-                                        <td className='align-middle'>{pr.created_at}</td>
+                                        <td className='align-middle'>{moment(pr.created_at).format('Do MMMM YYYY, h:mm a')}</td>
                                     </tr>
-                                )
-                            }
-                        </tbody>
-                    </Table>
+
+                                )}
+                            </tbody>
+                        </Table>                        
+                    }
                 </Col>
             </Row>
         </Container>

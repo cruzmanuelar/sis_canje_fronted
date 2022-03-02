@@ -9,7 +9,7 @@ const alertaNoLogeado = () => toast.error("Debes iniciar sesion!",{
     theme: "dark",
 });
 
-const codigoInvalido = (message) => toast.error(`¡${message}`,{
+const codigoInvalido = (message) => toast.error(`¡${message}!`,{
     theme: "dark",
 });
 

@@ -1,5 +1,4 @@
 import { UPDATE_PUNTOS, UPDATE_USER, UPDATE_AUTH } from "../types";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state, action) => {

@@ -28,7 +28,7 @@ const Login = () => {
 
     const content = await response.json();
 
-    if(content.message == 'Bienvenido'){
+    if(content.message === 'Bienvenido'){
 
       let token = content.token;
       let puntos = content.puntos;

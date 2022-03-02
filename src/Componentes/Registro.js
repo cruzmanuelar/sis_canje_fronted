@@ -29,10 +29,16 @@ const Registro = () => {
       })
     });
 
-    console.log(response);
+
+    
 
     setRedirect(true);
   
+  }
+
+  const ingresoDni = (e) => {
+
+    console.log(e.target.value);
   }
 
   if(redirect){
@@ -56,14 +62,14 @@ const Registro = () => {
           <Row>
             <Col>
             <Form.Group className="my-2">
-              <Form.Label>Nombre de usuario</Form.Label>
+              <Form.Label>Usuario</Form.Label>
               <Form.Control type="text" onChange={e => setNombre(e.target.value)} placeholder="Usuario" />
             </Form.Group>
             </Col>
             <Col>
             <Form.Group className="my-2">
               <Form.Label>DNI</Form.Label>
-              <Form.Control type="text" onChange={e => setDni(e.target.value)} placeholder="DNI" />
+              <Form.Control type="text" onChange={e => ingresoDni(e)} placeholder="DNI" />
             </Form.Group>
             </Col>
           </Row>
