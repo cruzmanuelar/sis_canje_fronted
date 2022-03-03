@@ -5,7 +5,7 @@ import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
 import { getProductos, canjeProducto } from '../Rutas';
-
+import login from '../estilos/login.css';
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
@@ -65,7 +65,8 @@ const Productos = () => {
     }
     
     return (
-        <Container className='mt-3'>
+        <div className={productos.length === 0? 'fondo':'fondoproductos' }>
+        <Container className='pt-3'>
             <div>
                 <ToastContainer position='bottom-right' hideProgressBar={true} />
             </div>
@@ -83,17 +84,17 @@ const Productos = () => {
                 <Row>
                 {productos.map((pr) => 
                     <Col md={3} key={pr.id}>
-                    <Card className='mt-4'>
-                    <Card.Img variant="top" src={pr.imagen}/>
-                    <Card.Body>
-                      <Card.Title>{pr.nombre}</Card.Title>
-                      <Card.Text className='h5'>
-                        <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
-                      </Card.Text>
-                      <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
-                    </Card.Body>
-                    </Card>
-                  </Col>
+                        <Card className='mt-4'>
+                        <Card.Img variant="top" src={pr.imagen}/>
+                        <Card.Body>
+                        <Card.Title>{pr.nombre}</Card.Title>
+                        <Card.Text className='h5'>
+                            <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
+                        </Card.Text>
+                        <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
+                        </Card.Body>
+                        </Card>
+                    </Col>
                 )}
                 </Row>
                 
@@ -101,6 +102,7 @@ const Productos = () => {
                 
             </Row>
         </Container>
+        </div>
     )
 }
 

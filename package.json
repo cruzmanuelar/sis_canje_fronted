@@ -15,7 +15,7 @@
     "react-loading": "^2.0.3",
     "react-responsive-modal": "^6.2.0",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
+    "react-scripts": "^5.0.0",
     "react-toastify": "^8.2.0",
     "sfcookies": "^1.0.2",
     "tachyons-components": "^1.0.1",

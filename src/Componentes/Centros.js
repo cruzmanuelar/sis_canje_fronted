@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import { getCentros } from '../Rutas';
+import login from '../estilos/login.css';
 
 const Centros = () => {
     
@@ -28,7 +29,8 @@ const Centros = () => {
     }
 
     return (
-        <Container className='text-center mt-3'>
+        <div className={centros.length === 0? 'fondo':'fondoproductos' }>
+        <Container className='text-center pt-3'>
                 <Row>
                 <div className='text-center'>
                     <h3>Centros</h3>                    
@@ -62,6 +64,7 @@ const Centros = () => {
                 }
                 </Row>
         </Container>
+        </div>
     )
 }
 

@@ -7,6 +7,7 @@ import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
 import { canjeProducto, centroId } from '../Rutas';
+import login from '../estilos/login.css';
 
 const Centro = () => {
 
@@ -80,7 +81,8 @@ const Centro = () => {
 
 
   return (
-    <Container className='mt-3'>
+    <div className={centro.length === 0? 'fondo':'fondoproductos' }>
+    <Container className='pt-3'>
       <div>
         <ToastContainer position='bottom-right' hideProgressBar={true} />
       </div>
@@ -140,6 +142,7 @@ const Centro = () => {
         </Row>
       }
     </Container>
+    </div>
   )
 }
 

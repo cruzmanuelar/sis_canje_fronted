@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Row, Col, Image, Card, Badge, Button, Dropdown} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import login from '../estilos/login.css';
 
 const Nosotros = () => {
 
@@ -10,12 +11,13 @@ const Nosotros = () => {
     },[])
 
   return (
+    <div className='fondo'>
     <Container>
-      <Row className='mt-3'>
+      <Row className='pt-3'>
         <Col md={6} sm={12}>
           <h3>¿Qué es CoKanje?</h3>
           <p>CoKanje es una plataforma virtual(ficticia) que te permite canjear bebidas gaseosos a cambio de puntos provenientes de productos ya consumidos, esta plataforma nació con la idea de poder contribuir al medio ambiente.</p>
-          <Image fluid className='rounded border border-dark' src='images/referenciaCanje.png'></Image>
+          <Image fluid className='rounded' style={{border:'2px solid black'}} src='images/referenciaCanje.png'></Image>
           <Row>
             <Col>
             <h4 className='mt-2'>¿Cómo conseguir puntos?</h4>
@@ -37,7 +39,7 @@ const Nosotros = () => {
           <p><b>1. </b>Ingresa a la web de CoKanje o dirigete a uno de los <Link to="/centros">centros</Link> autorizados.</p>
           <p><b>2. </b>Cada producto tiene un precio basado en puntos</p>
           <p><b>3. </b>Puedes ver los productos disponibles en la sección "Productos" o accediendo a cada centro en particular</p>
-          <p><b>4. </b>Pulsa en canjear producto</p>
+          <p><b>4. </b>Pulsa en "Canjear producto"</p>
           <Row className='text-center'>
             <Col md={6} sm={12}>
               <Card style={{ width: '15rem' }} className='mt-3'>
@@ -64,6 +66,7 @@ const Nosotros = () => {
         </Col>
       </Row>
     </Container>
+    </div>
   )
 }
 
