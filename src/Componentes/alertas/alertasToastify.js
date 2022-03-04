@@ -17,4 +17,8 @@ const canjeExitoso = (message) => toast.success(`¡${message}!`,{
     theme: "dark"
 });
 
-export {puntosInsuficientes, alertaNoLogeado, canjeExitoso, codigoInvalido };
+const credencialInvalida = () => toast.warning("Credenciales invalidas",{
+    theme: "dark"
+});
+
+export {puntosInsuficientes, alertaNoLogeado, canjeExitoso, codigoInvalido, credencialInvalida };

@@ -39,3 +39,30 @@
     width: 100%;
     margin-top: 4px;
 }
+
+@media (max-width: 500px){
+
+    .inputRegistro{
+        min-block-size: 100%;
+
+    }
+    .contenedorRegistro{
+
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 500px){
+    
+    .contenedorRegistro{
+        
+        display:'flex';
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .inputRegistro{
+        width: 200px;
+        /* background-color: red; */
+    }
+    
+}

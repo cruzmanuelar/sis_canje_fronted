@@ -5,7 +5,7 @@ import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
 import { getProductos, canjeProducto } from '../Rutas';
-import login from '../estilos/login.css';
+import estilos from '../estilos/estilos.css';
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);

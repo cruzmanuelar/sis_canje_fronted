@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Row, Col, Image, Card, Badge, Button, Dropdown} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import login from '../estilos/login.css';
+import estilos from '../estilos/estilos.css';
 
 const Nosotros = () => {
 
@@ -11,7 +11,7 @@ const Nosotros = () => {
     },[])
 
   return (
-    <div className='fondo'>
+    <div className='fondoproductos'>
     <Container>
       <Row className='pt-3'>
         <Col md={6} sm={12}>

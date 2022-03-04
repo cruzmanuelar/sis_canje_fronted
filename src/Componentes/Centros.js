@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import { getCentros } from '../Rutas';
-import login from '../estilos/login.css';
+import estilos from '../estilos/estilos.css';
 
 const Centros = () => {
     

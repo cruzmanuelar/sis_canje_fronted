@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Form, Row, Container, Col, Image, Dropdown } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { registro } from '../Rutas';
+import estilos from '../estilos/estilos.css';
+import { ToastContainer } from 'react-toastify';
 
 
 const Registro = () => {
 
-  const [nombre, setNombre] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [dni, setDni] = useState('');
-  const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
 
   let navigate = useNavigate();
@@ -22,23 +21,11 @@ const Registro = () => {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        nombre,
-        correo,
-        dni,
-        password
+
       })
     });
 
-
-    
-
     setRedirect(true);
-  
-  }
-
-  const ingresoDni = (e) => {
-
-    console.log(e.target.value);
   }
 
   if(redirect){
@@ -48,50 +35,144 @@ const Registro = () => {
   }
 
   return (
-    <Container fluid className='p-4 bt-white'>
-    <Row>
-      <Col sm={0}></Col>
-      <Col md={4} className=''>
-        <Form onSubmit={enviar} className='border border-secondary rounded p-3 bg-secondary text-white'>
+    <div className='fondo' md={4} sm={12}
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+
+      <div>
+        <ToastContainer position='bottom-right' hideProgressBar={true} />
+      </div>
+      <Formik
+        initialValues={{
+          usuario:'',
+          dni:'',
+          correo:'',
+          password:''
+        }}
+
+        validate={(valores) => {
           
+          let errores = {};
+          
+          if(!valores.usuario){
+            errores.usuario = 'Ingresa un usuario';
+          }
+
+          if(!valores.dni){
+            errores.dni = 'Ingresa un DNI';
+          }
+
+          if(!valores.correo){
+            errores.correo = 'Ingresa un correo';
+          }
+
+          if(!valores.password){
+            errores.password = 'Ingresa la contrasena';
+          }
+
+          return errores;
+        }}
+      >
+      {() =>(
+        <Form className='bg-light text-dark formulario'
+          style={{
+            width:'30%',
+            minWidth:'400px',
+
+          }}  
+        >
           <div className='text-center my-2'>
-          <h3>Registro - CoKanje</h3>
-            <Image fluid src='/images/botellasplasticas.jpg' className='border rounded' style={{width:'25vh', height:'25vh'}}></Image>
+            <h3 className='my-3'>Registrarse - CoKanje</h3>
+            <Image fluid src='/images/botellasplasticas.jpg'
+              style={{
+                width:'25vh',
+                height:'25vh',
+                border:'2px solid black',
+                borderRadius:'4px'
+              }}>
+            </Image>
           </div>
-          <Dropdown.Divider />
-          <Row>
-            <Col>
-            <Form.Group className="my-2">
-              <Form.Label>Usuario</Form.Label>
-              <Form.Control type="text" onChange={e => setNombre(e.target.value)} placeholder="Usuario" />
-            </Form.Group>
-            </Col>
-            <Col>
-            <Form.Group className="my-2">
-              <Form.Label>DNI</Form.Label>
-              <Form.Control type="text" onChange={e => ingresoDni(e)} placeholder="DNI" />
-            </Form.Group>
-            </Col>
-          </Row>
-          <Form.Group className="my-2">
-            <Form.Label>Correo electronico</Form.Label>
-            <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
-          </Form.Group>
-          <Form.Group className="mb-2">
-            <Form.Label>Contrasena</Form.Label>
-            <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
-          </Form.Group>
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="submit">
-                Registrarse
+
+          <div style={{display:'flex'}} className='contenedorRegistro'>
+            <div className='labelInput inputRegistro'>
+              <div style={{display:'flex', flexDirection:'column'}}>
+                <label className='label' htmlFor='correo'>Usuario:</label>
+                <Field 
+                  type='text'
+                  id='usuario'
+                  name='usuario'
+                  placeholder='Usuario'
+                  className='input'
+                />
+              </div>
+              <div style={{color:'red'}}>
+                <ErrorMessage name="usuario" />
+              </div>
+            </div>
+              
+
+            <div className='labelInput inputRegistro'>
+              <div style={{display:'flex', flexDirection:'column'}}>
+                <label className='label' htmlFor='correo'>DNI:</label>
+                <Field 
+                  type='text'
+                  id='dni'
+                  name='dni'
+                  placeholder='DNI'
+                  className='input'
+                />
+              </div>
+              <div style={{color:'red'}}>
+                <ErrorMessage name="usuario" />
+              </div>
+            </div>
+            
+          </div>
+
+
+
+          <div className='labelInput'>
+            <label className='label' htmlFor='correo'>Correo electrónico:</label>
+            <Field 
+              type='text'
+              id='correo'
+              name='correo'
+              placeholder='Correo'
+              className='input'
+            />
+          </div>
+          <div style={{color:'red'}}>
+            <ErrorMessage name="correo" />
+          </div>
+                    
+          <div className='labelInput'>
+            <label className='label' htmlFor='password'>Contraseña:</label>
+            <Field 
+              type='password'
+              id='password'
+              name='password'
+              placeholder='Contraseña'
+              className='input'
+            />
+          </div>
+          <div style={{color:'red'}}>
+            <ErrorMessage name="password" />
+          </div>
+
+          <div className="d-grid gap-2 mt-2">
+            <Button variant="success" type="submit">
+              Registrarme
             </Button>
           </div>
-        
-        </Form>
-      </Col>
-      <Col sm={0}></Col>
-    </Row>
-  </Container>
+
+        </Form>    
+      )}  
+      </Formik>
+    </div>
   )
 }
 

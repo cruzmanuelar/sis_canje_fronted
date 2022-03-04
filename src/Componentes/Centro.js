@@ -7,7 +7,7 @@ import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
 import { canjeProducto, centroId } from '../Rutas';
-import login from '../estilos/login.css';
+import estilos from '../estilos/estilos.css';
 
 const Centro = () => {
 

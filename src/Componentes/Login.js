@@ -1,84 +1,143 @@
-import React, { useState,useContext } from "react";
-import { Container, Row, Col, Button, Form, Dropdown, Image } from "react-bootstrap";
+import React, { useContext } from "react";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Button, Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/users/UserContext';
 import { login } from "../Rutas";
+import estilos from '../estilos/estilos.css';
+import { ToastContainer } from 'react-toastify';
+import { credencialInvalida } from './alertas/alertasToastify';
 
 const Login = () => {
 
-  const { updatePuntos, updateAuth } = useContext(UserContext);
-  const [correo, setCorreo] = useState('');
-  const [password, setPassword] = useState('');
-
-  let navigate = useNavigate();
-
-  const enviar = async (e) => {
-
-    e.preventDefault();
-
-    const response = await fetch(login,{
-      method: 'POST',
-      credentials: 'include',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        correo,
-        password
-      })
-    });
-
-    const content = await response.json();
-
-    if(content.message === 'Bienvenido'){
-
-      let token = content.token;
-      let puntos = content.puntos;
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('puntos', puntos);
-      updateAuth(true);
-      updatePuntos(puntos);
-
-      navigate('/');
-
-    }else{
-      console.log('Unauthorized');
-    }
-
-  }
+    let navigate = useNavigate();
+    const { updatePuntos, updateAuth } = useContext(UserContext);
 
   return (
-    <Container fluid className='p-4 bt-white'>
-      <Row>
-        <Col sm={0}></Col>
-        <Col md={4} className=''>
-          <Form onSubmit={enviar} className='border border-secondary rounded p-3 bg-secondary text-white'>
-            
-            <div className='text-center my-3'>
-            <h3>Iniciar sesion - CoKanje</h3>
-              <Image fluid src='/images/botellasplasticas.jpg' className='border rounded' style={{width:'25vh', height:'25vh'}}></Image>
+        <div className='fondo' md={4} sm={12}
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >   
+            <div>
+                <ToastContainer position='bottom-right' hideProgressBar={true} />
             </div>
-            <Dropdown.Divider />
-            <Form.Group className="my-3">
-              <Form.Label>Correo electronico</Form.Label>
-              <Form.Control type="email" onChange={e => setCorreo(e.target.value)} placeholder="Correo electronico" />
-            </Form.Group>
+            <Formik
+                initialValues={{
+                    correo:'',
+                    password:''
+                }}
+                    
+                validate={(valores)=>{
+                
+                    let errores = {};
 
-            <Form.Group className="mb-3">
-              <Form.Label>Contrasena</Form.Label>
-              <Form.Control type="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
-            </Form.Group>
-            <div className="d-grid gap-2">
-              <Button variant="success" type="submit">
-                  Iniciar sesion
-              </Button>
-            </div>
-          
-          </Form>
-        </Col>
-        <Col sm={0}></Col>
-      </Row>
-    </Container>
+                    if(!valores.correo){
+                        errores.correo = 'Ingresa un correo';
+                    }else if(!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(valores.correo)){
+                        errores.correo = 'Correo invalido';
+                    }
+                    
+                    if(!valores.password){
+                        errores.password = 'Ingresa una contrasena';
+                    }
+
+                    return errores;
+
+                }}
+
+                onSubmit={ async (valores, { setFieldValue })=>{
+
+                    const response = await fetch(login,{
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({
+                          correo:valores.correo,
+                          password: valores.password
+                        })
+                    });
+
+                    const content = await response.json();
+
+                    if(content.message === 'Bienvenido'){
+
+                        let token = content.token;
+                        let puntos = content.puntos;
+                  
+                        localStorage.setItem('token', token);
+                        localStorage.setItem('puntos', puntos);
+                        updateAuth(true);
+                        updatePuntos(puntos);
+                  
+                        navigate('/');
+                  
+                      }else{
+                        credencialInvalida();
+                        setFieldValue('password','');
+                        console.log('Unauthorized');
+                    }
+
+                }}
+
+                >
+
+                {()=>(
+                    <Form className='bg-light text-dark formulario'>
+                        <div className='text-center my-2'>
+                            <h3 className='my-3'>Iniciar sesión - CoKanje</h3>
+                            <Image fluid src='/images/botellasplasticas.jpg'
+                            style={{
+                                width:'25vh',
+                                height:'25vh',
+                                border:'2px solid black',
+                                borderRadius:'4px'
+                            }}>
+                            </Image>
+                        </div>
+
+                        <div className='labelInput'>
+                            <label className='label' htmlFor='correo'>Correo electrónico:</label>
+                            <Field 
+                                type='text'
+                                id='correo'
+                                name='correo'
+                                placeholder='Correo'
+                                className='input'
+                            />
+                        </div>
+                        <div style={{color:'red'}}>
+                            <ErrorMessage name="correo" />
+                        </div>
+                    
+
+                        <div className='labelInput'>
+                            <label className='label' htmlFor='password'>Contraseña:</label>
+                            <Field 
+                                type='password'
+                                id='password'
+                                name='password'
+                                placeholder='Contraseña'
+                                className='input'
+                            />
+                        </div>
+                        <div style={{color:'red'}}>
+                            <ErrorMessage name="password" />
+                        </div>
+                        <div className="d-grid gap-2 mt-2">
+                            <Button variant="success" type="submit">
+                                Iniciar sesion
+                            </Button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </div>    
+
   );
-};
+}
 
 export default Login;
