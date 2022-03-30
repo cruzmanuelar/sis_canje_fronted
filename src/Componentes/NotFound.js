@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
-// import img404 from '.../public/images/img404.jpg';
 
 const NotFound = () => {
   return (

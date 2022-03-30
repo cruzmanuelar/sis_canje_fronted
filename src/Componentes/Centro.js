@@ -6,8 +6,8 @@ import ReactLoading from 'react-loading';
 import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
-import { canjeProducto, centroId } from '../Rutas';
-import estilos from '../estilos/estilos.css';
+import { baseUrl } from '../Rutas';
+import '../estilos/estilos.css';
 
 const Centro = () => {
 
@@ -19,7 +19,7 @@ const Centro = () => {
   const {id} = useParams();
   const navigate = useNavigate();
 
-  let url = `${centroId}-${id}`;
+  let url = `${baseUrl}/centro-${id}`;
 
   useEffect(() => {
 
@@ -45,7 +45,7 @@ const Centro = () => {
         return puntosInsuficientes();
     }
 
-    const response = await fetch(canjeProducto,{
+    const response = await fetch(`${baseUrl}/canjepuntos`,{
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -83,9 +83,9 @@ const Centro = () => {
   return (
     <div className={centro.length === 0? 'fondo':'fondoproductos' }>
     <Container className='pt-3'>
-      <div>
+      {/* <div>
         <ToastContainer position='bottom-right' hideProgressBar={true} />
-      </div>
+      </div> */}
       <Row>
         <Col md={3}>
           <div className='text-center mt-2'>
@@ -130,7 +130,7 @@ const Centro = () => {
                     <Card.Title>{pr.nombre}</Card.Title>
                     <Card.Text className='h5'>
                       <Badge bg="danger">{pr.precio_puntos} ptos</Badge>{' '}
-                      <Badge bg="warning">{pr.cantidad} disp</Badge>
+                      <Badge bg="warning">Stock: {pr.cantidad}</Badge>
                     </Card.Text>
                     <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
                   </Card.Body>

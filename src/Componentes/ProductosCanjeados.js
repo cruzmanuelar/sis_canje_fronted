@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import ReactLoading from 'react-loading';
-import { getCanjes } from '../Rutas';
+import { baseUrl } from '../Rutas';
 import moment from 'moment';
 import 'moment/locale/es';
 
@@ -14,7 +14,7 @@ const ProductosCanjeados = () => {
 
         const obtenerCanjes = async () => {
 
-            const response = await fetch(getCanjes,{
+            const response = await fetch(`${baseUrl}/misCanjes`,{
                 method: 'GET',
                 credentials: 'include',
                 headers: {

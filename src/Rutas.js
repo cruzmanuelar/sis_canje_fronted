@@ -6,6 +6,8 @@ const canjeProducto = 'https://siscanj.herokuapp.com/public/api/canjepuntos';
 const centroId = 'http://siscanj.herokuapp.com/public/api/centro';
 const getCanjes = 'https://siscanj.herokuapp.com/public/api/misCanjes';
 const registro = 'http://siscanj.herokuapp.com/public/api/registro';
-const getUser = 'http://siscanj.herokuapp.com/public/api/user'
+const getUser = 'http://siscanj.herokuapp.com/public/api/user';
 
-export { getProductos, login, canjePuntos, canjeProducto, centroId, getCentros, getCanjes, registro, getUser };
+const baseUrl = 'http://siscanj.herokuapp.com/public/api';
+
+export { getProductos, login, canjePuntos, canjeProducto, centroId, getCentros, getCanjes, registro, getUser, baseUrl };

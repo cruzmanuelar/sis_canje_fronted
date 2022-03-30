@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import { getCentros } from '../Rutas';
-import estilos from '../estilos/estilos.css';
+import { baseUrl } from '../Rutas';
+import '../estilos/estilos.css';
 
 const Centros = () => {
     
@@ -14,7 +14,7 @@ const Centros = () => {
 
         const obtenerCentros = async () => {
             
-            const data = await fetch(getCentros)
+            const data = await fetch(`${baseUrl}/centros`)
             const centros = await data.json()
             setCentros(centros.data);
         };

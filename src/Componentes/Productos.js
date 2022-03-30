@@ -4,8 +4,8 @@ import { Container, Row, Col, Card, Button, Badge, Dropdown } from 'react-bootst
 import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { puntosInsuficientes, alertaNoLogeado, canjeExitoso } from './alertas/alertasToastify';
-import { getProductos, canjeProducto } from '../Rutas';
-import estilos from '../estilos/estilos.css';
+import { baseUrl } from '../Rutas';
+import '../estilos/estilos.css';
 const Productos = () => {
 
     let [productos, setProductos] = useState([]);
@@ -15,7 +15,7 @@ const Productos = () => {
 
         const obtenerProductos = async () => {
         
-            const data = await fetch(getProductos)
+            const data = await fetch(`${baseUrl}/productos`)
             const productos = await data.json()
             setProductos(productos.data);
         }
@@ -30,7 +30,7 @@ const Productos = () => {
             return puntosInsuficientes();
         }
 
-        const response = await fetch(canjeProducto,{
+        const response = await fetch(`${baseUrl}/canjepuntos`,{
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -67,9 +67,9 @@ const Productos = () => {
     return (
         <div className={productos.length === 0? 'fondo':'fondoproductos' }>
         <Container className='pt-3'>
-            <div>
+            {/* <div>
                 <ToastContainer position='bottom-right' hideProgressBar={true} />
-            </div>
+            </div> */}
             <Row>
             <div className='text-center'>
                 <h3>Productos</h3>                    

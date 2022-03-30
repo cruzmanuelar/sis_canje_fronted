@@ -10,13 +10,7 @@ import Registro from './Componentes/Registro';
 import UserState from './context/users/UserState';
 import ProductosCanjeados from './Componentes/ProductosCanjeados';
 
-import { useEffect } from 'react';
-
 function App() {
-
-  useEffect(()=>{
-
-  },[])
 
   return (
     <UserState>
@@ -27,9 +21,11 @@ function App() {
             <Route path='/nosotros' element={<Nosotros/>}/>
             <Route path='/Centros' element={<Centros/>}/>
             <Route path='/centro/:id' element={<Centro/>}/>
-            <Route path='/login' element={<Login/>}/>
             <Route path='/canjes' element={<ProductosCanjeados/>}/>
-            <Route path='/registro' element={<Registro/>}/>
+
+            <Route path='/login' element={ <Login/> }/>
+            <Route path='/registro' element={ <Registro/> }/>
+
             <Route path='*' element={<NotFound/>}/>
           </Routes>      
       </BrowserRouter>

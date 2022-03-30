@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button, Badge, Form, Image } from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Button, Badge, Form, Image, Spinner } from 'react-bootstrap';
 import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from '../context/users/UserContext';
 import { ToastContainer } from 'react-toastify';
 import { canjeExitoso, codigoInvalido } from './alertas/alertasToastify';
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import { canjePuntos } from '../Rutas';
+import { baseUrl } from '../Rutas';
 
-const Navegacion = (props) => {
+const Navegacion = () => {
 
     const { auth, puntos, updatePuntos, updateAuth } = useContext(UserContext);
     const [ modal, setModal ] = useState(false);
-    const [ codigo, setCodigo] = useState('');
+    const [ codigo, setCodigo ] = useState('');
+    const [ spinner, setSpineer ] = useState(false);
 
     let navigate = useNavigate();
 
@@ -37,11 +38,11 @@ const Navegacion = (props) => {
 
     const canjearPuntos = async () =>{
 
-        if(codigo.length != 8){
+        if(codigo.length !== 8){
             return codigoInvalido('Codigo invalido');
         }
-
-        const response = await fetch(canjePuntos,{
+        setSpineer(true);
+        const response = await fetch(`${baseUrl}/canje`,{
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -54,9 +55,10 @@ const Navegacion = (props) => {
         });
 
         const content = await response.json();
+        setSpineer(false);
 
 
-        if(content.message == 'Código inválido' || content.status == 'error'){
+        if(content.message === 'Código inválido' || content.status === 'error'){
 
             cerrarModal();
             codigoInvalido('Código inválido');
@@ -72,6 +74,7 @@ const Navegacion = (props) => {
 
   return (
     <Navbar bg="dark" expand="lg">
+
         <div>
             <ToastContainer position='bottom-right' hideProgressBar={true} />
         </div>
@@ -85,7 +88,15 @@ const Navegacion = (props) => {
             </Form.Group>
             </Form>
             <div className="d-grid gap-2 mt-2">
-                <Button variant='success' onClick={canjearPuntos}>Canjear</Button>
+                <Button variant='success' onClick={canjearPuntos}>
+                {spinner ?
+                <Spinner animation="border" role="status" size="sm">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+                :
+                'Canjear'
+                }
+                </Button>
             </div>
             
         </Modal>

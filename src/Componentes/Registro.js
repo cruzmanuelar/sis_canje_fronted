@@ -1,38 +1,25 @@
-import React, { useState } from 'react';
-import { Button, Image } from 'react-bootstrap';
+import { Button, Image, Spinner } from 'react-bootstrap';
+import React, { useContext, useEffect, useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import UserContext from '../context/users/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { registro } from '../Rutas';
-import estilos from '../estilos/estilos.css';
-import { ToastContainer } from 'react-toastify';
+import { baseUrl } from '../Rutas';
+import '../estilos/estilos.css';
+import { errorRegistro, usuarioRegistrado } from './alertas/alertasToastify';
 
 
 const Registro = () => {
 
-  const [redirect, setRedirect] = useState(false);
+  const [ spinner, setSpineer ] = useState(false);
 
   let navigate = useNavigate();
+  const { auth } = useContext(UserContext);
 
-  const enviar = async (e) => {
+  useEffect(()=>(
 
-    e.preventDefault();
+    auth && navigate('/')
 
-    const response = await fetch(registro,{
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-
-      })
-    });
-
-    setRedirect(true);
-  }
-
-  if(redirect){
-    
-    navigate('/login');
-
-  }
+  ))
 
   return (
     <div className='fondo' md={4} sm={12}
@@ -43,9 +30,6 @@ const Registro = () => {
         alignItems: 'center',
       }}>
 
-      <div>
-        <ToastContainer position='bottom-right' hideProgressBar={true} />
-      </div>
       <Formik
         initialValues={{
           usuario:'',
@@ -60,14 +44,20 @@ const Registro = () => {
           
           if(!valores.usuario){
             errores.usuario = 'Ingresa un usuario';
+          }else if(valores.usuario.length < 4){
+            errores.usuario = 'Minimo 4 caracteres';
           }
 
-          if(!valores.dni){
+          if(!valores.dni ){
             errores.dni = 'Ingresa un DNI';
+          }else if(!/^[0-9]{8}$/.test(valores.dni)){
+            errores.dni = 'DNI incorrecto';
           }
 
           if(!valores.correo){
             errores.correo = 'Ingresa un correo';
+          }else if(!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(valores.correo)){
+            errores.correo = 'Correo invalido';
           }
 
           if(!valores.password){
@@ -75,6 +65,42 @@ const Registro = () => {
           }
 
           return errores;
+        }}
+
+        onSubmit={ async (valores, { setFieldValue })=>{
+
+          setSpineer(true);
+
+          const response = await fetch(`${baseUrl}/registro`,{
+              method: 'POST',
+              credentials: 'include',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({
+                nombre:valores.usuario,
+                dni: valores.dni,
+                correo:valores.correo,
+                password: valores.password
+              })
+          });
+
+          const content = await response.json();
+
+          setSpineer(false);
+
+          if(content.Estado === 'Fallo'){
+
+            const { Errores } = content;
+            const { dni, nombre, correo } = Errores;
+
+            nombre !== undefined && errorRegistro(nombre[0]);
+            dni !== undefined && errorRegistro(dni[0]);
+            correo !== undefined && errorRegistro(correo[0]);
+
+          }else{
+
+            usuarioRegistrado('Usuario registrado con exito');
+          } 
+
         }}
       >
       {() =>(
@@ -114,7 +140,6 @@ const Registro = () => {
               </div>
             </div>
               
-
             <div className='labelInput inputRegistro'>
               <div style={{display:'flex', flexDirection:'column'}}>
                 <label className='label' htmlFor='correo'>DNI:</label>
@@ -127,13 +152,11 @@ const Registro = () => {
                 />
               </div>
               <div style={{color:'red'}}>
-                <ErrorMessage name="usuario" />
+                <ErrorMessage name="dni" />
               </div>
             </div>
             
           </div>
-
-
 
           <div className='labelInput'>
             <label className='label' htmlFor='correo'>Correo electrónico:</label>
@@ -165,7 +188,13 @@ const Registro = () => {
 
           <div className="d-grid gap-2 mt-2">
             <Button variant="success" type="submit">
-              Registrarme
+              {spinner ?
+              <Spinner animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              :
+              'Registrarme'
+              }
             </Button>
           </div>
 
@@ -176,4 +205,4 @@ const Registro = () => {
   )
 }
 
-export default Registro
+export default Registro;

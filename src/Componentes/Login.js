@@ -1,17 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Image } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/users/UserContext';
-import { login } from "../Rutas";
-import estilos from '../estilos/estilos.css';
+import { baseUrl } from "../Rutas";
+import '../estilos/estilos.css';
 import { ToastContainer } from 'react-toastify';
 import { credencialInvalida } from './alertas/alertasToastify';
 
 const Login = () => {
 
     let navigate = useNavigate();
-    const { updatePuntos, updateAuth } = useContext(UserContext);
+    const { auth,updatePuntos, updateAuth } = useContext(UserContext);
+
+    useEffect(()=>(
+
+        auth && navigate('/')
+
+    ))
+
+
 
   return (
         <div className='fondo' md={4} sm={12}
@@ -51,7 +59,7 @@ const Login = () => {
 
                 onSubmit={ async (valores, { setFieldValue })=>{
 
-                    const response = await fetch(login,{
+                    const response = await fetch(`${baseUrl}/login`,{
                         method: 'POST',
                         credentials: 'include',
                         headers: {'Content-Type':'application/json'},

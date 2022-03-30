@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col, Image, Card, Badge, Button, Dropdown} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import estilos from '../estilos/estilos.css';
+import '../estilos/estilos.css';
 
 const Nosotros = () => {
-
-
-    useEffect(()=>{
-
-    },[])
 
   return (
     <div className='fondoproductos'>
