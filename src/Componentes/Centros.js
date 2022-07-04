@@ -46,8 +46,8 @@ const Centros = () => {
                 <Row>
                     {centros.map((cen) => 
                     
-                    <Col md={4} className='' key={cen.id}>
-                    <Card className='mt-4'>
+                    <Col md={4} className='contenedorCard' key={cen.id}>
+                    <Card className='mt-4 sombra'>
                             <Card.Img variant="top" className='' src={cen.imagen}/>
                             <Card.Body>
                                 <Card.Title>{cen.nombre}</Card.Title>

@@ -83,16 +83,16 @@ const Productos = () => {
                 :
                 <Row>
                 {productos.map((pr) => 
-                    <Col md={3} key={pr.id}>
-                        <Card className='mt-4'>
-                        <Card.Img variant="top" src={pr.imagen}/>
-                        <Card.Body>
-                        <Card.Title>{pr.nombre}</Card.Title>
-                        <Card.Text className='h5'>
-                            <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
-                        </Card.Text>
-                        <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
-                        </Card.Body>
+                    <Col md={3} key={pr.id} className='contenedorCard'>
+                        <Card className='mt-4 sombra'>
+                            <Card.Img variant="top" src={pr.imagen}/>
+                            <Card.Body>
+                                <Card.Title>{pr.nombre}</Card.Title>
+                                <Card.Text className='h5'>
+                                    <Badge bg="danger">{pr.precio_puntos} ptos</Badge>
+                                </Card.Text>
+                                <Button className='botonCanjear' onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
+                            </Card.Body>
                         </Card>
                     </Col>
                 )}

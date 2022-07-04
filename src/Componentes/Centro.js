@@ -123,8 +123,8 @@ const Centro = () => {
           <Dropdown.Divider />
             <Row className=''>
               {producto.map((pr) => 
-                <Col md={3} key={pr.id}>
-                  <Card className='mt-4'>
+                <Col md={3} key={pr.id} className='contenedorCard'>
+                  <Card className='mt-4 sombra'>
                   <Card.Img variant="top" src={pr.imagen}/>
                   <Card.Body>
                     <Card.Title>{pr.nombre}</Card.Title>
@@ -132,7 +132,7 @@ const Centro = () => {
                       <Badge bg="danger">{pr.precio_puntos} ptos</Badge>{' '}
                       <Badge bg="warning">Stock: {pr.cantidad}</Badge>
                     </Card.Text>
-                    <Button onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
+                    <Button size='sm' className='botonCanjear' onClick={() => validarUsuario(pr.id, pr.precio_puntos)} variant="primary">Canjear producto</Button>
                   </Card.Body>
                   </Card>
                 </Col>

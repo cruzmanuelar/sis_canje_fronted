@@ -7,6 +7,8 @@ import { canjeExitoso, codigoInvalido } from './alertas/alertasToastify';
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import { baseUrl } from '../Rutas';
+import '../estilos/estilos.css';
+
 
 const Navegacion = () => {
 
@@ -111,7 +113,7 @@ const Navegacion = () => {
             <Navbar.Collapse id="navbarScroll">
             
                 <Nav
-                    className="me-auto my-2 my-lg-0"
+                    className="me-auto my-2 my-lg-0 menuHamburguesa"
                     style={{ maxHeight: '100px'}}
                     navbarScroll
                 >
@@ -146,14 +148,16 @@ const Navegacion = () => {
                 </Button>
                 </>
                 :
-                <>
-                <Button variant="primary outline-danger">
-                    <NavLink style={{color:'white', textDecoration:'none'}} to='/registro'>Registrarse</NavLink>
-                </Button>
-                <Button className='mx-2' variant="success outline-danger">
-                    <NavLink style={{color:'white', textDecoration:'none'}} to='/login'>Ingresar</NavLink>
-                </Button>
-                </>
+                <div className='botonesHamburguesa'>
+
+                    <Button variant="primary outline-danger">
+                        <NavLink style={{color:'white', textDecoration:'none'}} to='/registro'>Registrarse</NavLink>
+                    </Button>
+                    <Button variant="success outline-danger">
+                        <NavLink style={{color:'white', textDecoration:'none'}} to='/login'>Ingresar</NavLink>
+                    
+                    </Button>
+                </div>
                 }
                 
             </Navbar.Collapse>

@@ -19,8 +19,6 @@ const Login = () => {
 
     ))
 
-
-
   return (
         <div className='fondo' md={4} sm={12}
             style={{
