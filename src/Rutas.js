@@ -8,6 +8,6 @@
 // const registro = 'http://siscanj.herokuapp.com/public/api/registro';
 // const getUser = 'http://siscanj.herokuapp.com/public/api/user';
 
-const baseUrl = 'http://siscanj.herokuapp.com/public/api';
+const baseUrl = 'https://siscanj.herokuapp.com/public/api';
 
 export { baseUrl };
