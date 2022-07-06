@@ -10,4 +10,4 @@
 
 const baseUrl = 'http://siscanj.herokuapp.com/public/api';
 
-export { getProductos, login, canjePuntos, canjeProducto, centroId, getCentros, getCanjes, registro, getUser, baseUrl };
+export { baseUrl };
