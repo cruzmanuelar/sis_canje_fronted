@@ -1,4 +1,4 @@
-# CoKanke
+# CoKanje
 
 Desarrollado con React en el Frontend y Laravel en Backend, SQL en la base de datos
 
